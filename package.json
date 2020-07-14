@@ -1,0 +1,24 @@
+{
+  "name": "statehook",
+  "version": "0.0.1",
+  "description": "An observable hook.",
+  "main": "statehook.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/statehook/statehook.js.git"
+  },
+  "keywords": [
+    "state",
+    "machine",
+    "observable"
+  ],
+  "author": "ZenWANG (zenyes@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/statehook/statehook.js/issues"
+  },
+  "homepage": "https://github.com/statehook/statehook.js#readme"
+}
