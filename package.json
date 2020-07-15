@@ -1,6 +1,6 @@
 {
   "name": "statehook",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An observable hook.",
   "main": "statehook.js",
   "scripts": {

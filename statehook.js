@@ -1,12 +1,13 @@
-/* eslint-disable */
 'use strict';
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
       define('statehook', factory);
       define('StateHook', factory);
-  } else if (typeof exports === 'object') {
+  }
+  if (typeof exports === 'object') {
       module.exports = factory();
-  } else {
+  }
+  if (typeof root === 'object') {
       root.statehook = factory();
       root.StateHook = root.statehook;
   }
@@ -80,22 +81,19 @@
       return gVar;
     };
 
-    gHook.getChild = function getChild(keyParameter) {
-      var currentVal = gHook.get();
-      if ('object' !== typeof currentVal) return undefined;
-      var keyParameterType = typeof keyParameter;
-      if (keyParameterType === 'string' || keyParameterType === 'number') {
-        keyParameter = [keyParameter];
+    gHook.getChild = function getChild(childPath) {
+      if ('object' !== typeof gVar) return undefined;
+      if (!_isArray(childPath)) {
+        childPath = [childPath];
       }
-      if (_isArray(keyParameter)) {
-        for (var _keyIdx in keyParameter) {
-          if ('object' === typeof currentVal) {
-            var key = keyParameter[_keyIdx];
-            currentVal = currentVal[key];
-          } else {
-            currentVal = undefined;
-            break;
-          }
+      var currentVal = gVar;
+      for (var _keyIdx in childPath) {
+        if ('object' === typeof currentVal) {
+          var key = childPath[_keyIdx];
+          currentVal = currentVal[key];
+        } else {
+          currentVal = undefined;
+          break;
         }
       }
       return currentVal;
