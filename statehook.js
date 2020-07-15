@@ -7,7 +7,7 @@
   if (typeof exports === 'object') {
       module.exports = factory();
   }
-  if (typeof root === 'object') {
+  if (!!root && typeof root === 'object') {
       root.statehook = factory();
       root.StateHook = root.statehook;
   }
