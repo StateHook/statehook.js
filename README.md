@@ -28,10 +28,11 @@ var hook = StateHook.createHook(0, function(newHook) {
 ```
 
 ----------
-### hook.<strong>set(value)</strong>
-### hook.<strong>get()</strong>
-### hook.<strong>getChild(childPathArray)</strong>
-### hook.<strong>emit(eventType, actionFunction)</strong>
-### hook.<strong>observe(observer)</strong>
-### hook.<strong>observe(eventType, observer)</strong>
-### hook.<strong>discard()</strong>
+### hook.<strong>set(value)</strong> => void
+### hook.<strong>get()</strong> => any
+### hook.<strong>getChild(childPathArray)</strong> => any
+### hook.<strong>dispatch(dispatcher: (eventSource: Object) => eventSource)</strong> => void
+### hook.<strong>dispatch(eventSource: Object)</strong> => void
+### hook.<strong>subscribe(observer: (event, hook))</strong> => void
+### hook.<strong>subscribe(eventType, observer: (event, hook))</strong> => void
+### hook.<strong>discard()</strong> => void

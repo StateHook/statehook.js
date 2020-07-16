@@ -59,11 +59,11 @@
     /* global variable */
     var gIsDiscarded = false;
     var gHook = {};
-    var gObservers = {};
-    var gAllEventObservers = {};
-    var gKeyCounter = 0;
+    var gEventObservers = {};
+    var gGlobalObservers = {};
+    var gObserverIdCounter = 0;
     var gEventIdCounter = 0;
-    var gVar = defaultValue;
+    var gState = defaultValue;
 
     function _getGHook() {
       return _mergeObject({}, gHook);
@@ -72,21 +72,21 @@
     gHook.discard = function discard() {
       gIsDiscarded = true;
       gHook = {};
-      gObservers = {};
-      gAllEventObservers = {};
-      gVar = undefined;
+      gEventObservers = {};
+      gGlobalObservers = {};
+      gState = undefined;
     };
 
     gHook.get = function get() {
-      return gVar;
+      return gState;
     };
 
     gHook.getChild = function getChild(childPath) {
-      if ('object' !== typeof gVar) return undefined;
+      if ('object' !== typeof gState) return undefined;
       if (!_isArray(childPath)) {
         childPath = [childPath];
       }
-      var currentVal = gVar;
+      var currentVal = gState;
       for (var _keyIdx in childPath) {
         if ('object' === typeof currentVal) {
           var key = childPath[_keyIdx];
@@ -99,67 +99,72 @@
       return currentVal;
     };
 
-    gHook.set = function set(newVar) {
-      if (gIsDiscarded) throw new Error('The hook which has this function you call has been discarded!')
-      gVar = newVar;
-      return gVar;
+    gHook.set = function set(newState) {
+      if (gIsDiscarded) throw new Error('The hook which has this function you call has been discarded!');
+      gState = newState;
+      return gState;
     };
 
-    gHook.emit = function emit(eventType, emiter) {
-      if (gIsDiscarded) throw new Error('The hook which has this function you call has been discarded!')
+    gHook.dispatch = function dispatch(dispatcher) {
+      if (gIsDiscarded) throw new Error('The hook which has this function you call has been discarded!');
       var occurTime = Date.now();
-      var typeofArgEmiter = typeof emiter;
       var eventData;
-      if ('function' === typeofArgEmiter) { // (String, Function)
-        eventData = emiter(gHook);
+      if ('function' === typeof dispatcher) { // (String, Function)
+        eventData = { state: gState };
+        var dispatcherResult = dispatcher(eventData);
+        if (dispatcherResult && 'object' === typeof dispatcherResult) {
+          eventData = dispatcherResult;
+        }
       } else {
-        throw new Error('The second parameter to be expected a function but got a ' + typeofArgEmiter);
+        eventData = dispatcher;
       }
+      var eventDataType = typeof eventData;
+      if ('object' !== eventDataType) {
+        throw new Error('The second parameter to be expected a function or object but got a ' + eventDataType);
+      }
+
+      gState = eventData.state;
+
       gEventIdCounter += 1;
-      var eventInfo = { eventType: eventType, occurTime: occurTime, eventId: gEventIdCounter };
+      var eventId = gEventIdCounter;
+      var eventInfo = _mergeObject({}, eventData, { type: eventData.type, time: occurTime, id: eventId });
       // allevent observer
-      for (var _key in gAllEventObservers) {
-        var obser = gAllEventObservers[_key];
-        obser(_mergeObject(
-            {},
-            eventData,
-            eventInfo,
-          ), _getGHook());
+      for (var obserId in gGlobalObservers) {
+        var obser = gGlobalObservers[obserId];
+        obser(_mergeObject({}, eventInfo), _getGHook());
       }
       // event observer
-      var observersThisEvent = gObservers[eventType] || null;
-      if (!!observersThisEvent) {
-        for (var obserCount in observersThisEvent) {
-          var obser = observersThisEvent[obserCount];
-          obser(_mergeObject(
-            {},
-            eventData,
-            eventInfo,
-          ), _getGHook());
+      var eventObservers = gEventObservers[eventData.type] || null;
+      if (eventObservers) {
+        for (var obserId in eventObservers) {
+          var obser = eventObservers[obserId];
+          obser(_mergeObject({}, eventInfo), _getGHook());
         }
       }
     };
 
-    gHook.observe = function observe(eventType, observer) {
-      if (gIsDiscarded) throw new Error('The hook which has this function you call has been discarded!')
-      var typeofArgEventType = typeof eventType;
-      var typeofArgObserver = typeof observer;
-      gKeyCounter += 1;
-      var thisCount = gKeyCounter;
-      if ('function' === typeofArgEventType) { // (Function)
+    gHook.subscribe = function subscribe(eventType, observer) {
+      if (gIsDiscarded) throw new Error('The hook which has this function you call has been discarded!');
+      var eventTypeType = typeof eventType;
+      var observerType = typeof observer;
+      gObserverIdCounter += 1;
+      var obserId = gObserverIdCounter;
+      if ('function' === eventTypeType) { // (Function)
         observer = eventType;
-        gAllEventObservers[thisCount] = observer;
+        gGlobalObservers[obserId] = observer;
         return function () {
-          delete gAllEventObservers[thisCount];
+          delete gGlobalObservers[obserId];
         };
-      } else if ('function' === typeofArgObserver) { // (String, Function)
-        gObservers[eventType] = gObservers[eventType] || {};
-        gObservers[eventType][thisCount] = observer;
+      } else if ('function' === observerType) { // (String, Function)
+        eventType = '' + eventType;
+        gEventObservers[eventType] = gEventObservers[eventType] || {};
+        gEventObservers[eventType][obserId] = observer;
+
         return function () {
-          if (gObservers[eventType]) {
-            delete gObservers[eventType][thisCount];
+          if (gEventObservers[eventType]) {
+            delete gEventObservers[eventType][obserId];
           }
-        };
+        }
       } else {
         throw new Error('There are 2 overloads expected for this function, (String, Function) or (Function)');
       }
@@ -167,6 +172,7 @@
     var hookToReturn = _getGHook();
     return setupFunc(hookToReturn) || hookToReturn;
   };
+
   return {
     createHook: createHook,
   };
