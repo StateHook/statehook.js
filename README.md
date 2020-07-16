@@ -33,6 +33,6 @@ var hook = StateHook.createHook(0, function(newHook) {
 ### hook.<strong>getChild(childPathArray)</strong> => any
 ### hook.<strong>dispatch(dispatcher: (eventSource: Object) => eventSource)</strong> => void
 ### hook.<strong>dispatch(eventSource: Object)</strong> => void
-### hook.<strong>subscribe(observer: (event, hook))</strong> => void
-### hook.<strong>subscribe(eventType, observer: (event, hook))</strong> => void
+### hook.<strong>subscribe(observer: (event, hook))</strong> => unsubscribe() => {}
+### hook.<strong>subscribe(eventType, observer: (event, hook))</strong> => unsubscribe() => {}
 ### hook.<strong>discard()</strong> => void
