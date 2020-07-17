@@ -1,7 +1,7 @@
 {
   "name": "statehook",
-  "version": "0.1.0",
-  "description": "An observable hook.",
+  "version": "0.2.0",
+  "description": "A event-driven state hook.",
   "main": "statehook.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,7 +13,9 @@
   "keywords": [
     "state",
     "machine",
-    "observable"
+    "emit",
+    "hook",
+    "event"
   ],
   "author": "ZenWANG (zenyes@gmail.com)",
   "license": "MIT",
