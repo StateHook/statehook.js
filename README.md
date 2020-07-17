@@ -1,5 +1,5 @@
 # statehook.js
-An observable hook.
+An event-driven state hook.
 
 ## Installation
 
@@ -11,28 +11,19 @@ $ npm install statehook
 
 ----------
 
-### StateHook.<strong>createHook([defaultValue, [setupFunction]])</strong>
+### StateHook.<strong>createHook([defaultValue])</strong>
 
 Create a hook
 
 ```JavaScript
 var hook = StateHook.createHook();
 // or
-var hook = StateHook.createHook(0);
-// or
-var hook = StateHook.createHook(0, function(newHook) {
-  newHook.additionFunction = function() {
-    return 'this is an addition function';
-  }
-});
+var hook = StateHook.createHook('default value');
 ```
 
 ----------
-### hook.<strong>set(value)</strong> => void
-### hook.<strong>get()</strong> => any
-### hook.<strong>getChild(childPathArray)</strong> => any
-### hook.<strong>dispatch(dispatcher: (eventSource: Object) => eventSource)</strong> => void
-### hook.<strong>dispatch(eventSource: Object)</strong> => void
-### hook.<strong>subscribe(observer: (event, hook))</strong> => unsubscribe() => {}
-### hook.<strong>subscribe(eventType, observer: (event, hook))</strong> => unsubscribe() => {}
+### hook.<strong>setState(value)</strong> => void
+### hook.<strong>getState()</strong> => any
+### hook.<strong>on(eventType, args)</strong> => void
+### hook.<strong>emit(eventType, listenerFunction)</strong> => void
 ### hook.<strong>discard()</strong> => void
