@@ -1,6 +1,6 @@
 {
   "name": "statehook",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "An event-driven state hook.",
   "main": "statehook.js",
   "scripts": {
