@@ -17,9 +17,9 @@
         suber = undefined;
       };
     }
-    function dispatch(args) {
+    function dispatch() {
       if (!subscribers) throw new Error('This hook has been discarded!');
-      for (var idx in subscribers) subscribers[idx](args);
+      for (var idx in subscribers) subscribers[idx].apply(undefined, arguments);
     }
     function discard() { state = undefined; subscribers = undefined; }
     return { getState: getState, setState: setState, subscribe: subscribe, dispatch: dispatch, discard: discard };
