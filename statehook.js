@@ -19,7 +19,7 @@
     }
     function dispatch() {
       if (!subscribers) throw new Error('This hook has been discarded!');
-      for (var idx in subscribers) subscribers[idx].apply(undefined, arguments);
+      for (var idx in subscribers) subscribers[idx].apply(this, arguments);
     }
     function discard() { state = undefined; subscribers = undefined; }
     return { getState: getState, setState: setState, subscribe: subscribe, dispatch: dispatch, discard: discard };
