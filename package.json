@@ -1,7 +1,7 @@
 {
   "name": "statehook",
-  "version": "0.3.0",
-  "description": "An event-driven state hook.",
+  "version": "0.3.1",
+  "description": "A state hook.",
   "main": "statehook.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
