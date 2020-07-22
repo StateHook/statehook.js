@@ -1,5 +1,5 @@
 # statehook.js
-An event-driven state hook.
+A state hook.
 
 ## Installation
 
