@@ -1,6 +1,6 @@
 {
   "name": "statehook",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A state hook.",
   "main": "statehook.js",
   "scripts": {
@@ -11,10 +11,12 @@
     "url": "git+https://github.com/statehook/statehook.js.git"
   },
   "keywords": [
+    "state hook",
+    "state machine",
     "state",
     "machine",
-    "emit",
     "hook",
+    "emit",
     "event"
   ],
   "author": "ZenWANG (zenyes@gmail.com)",

@@ -22,8 +22,8 @@ var hook = StateHook.createHook('default value');
 ```
 
 ----------
-### hook.<strong>setState(value)</strong> => void
+### hook.<strong>setState(newState)</strong> => newState
 ### hook.<strong>getState()</strong> => any
-### hook.<strong>subscribe(subscriber)</strong> => void
-### hook.<strong>dispatch(args)</strong> => void
+### hook.<strong>subscribe(subscriber)</strong> => unsubcribe()
+### hook.<strong>dispatch(args1, arg2, ..., argN)</strong> => void
 ### hook.<strong>discard()</strong> => void
