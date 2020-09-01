@@ -8,7 +8,11 @@
     var undefined = (function _undefined() {})();
     var subscribers = [];
     function getState() { return state; }
-    function setState(newState) { state = newState; return state; }
+    function setState(newState) {
+      if ('function' === typeof newState) newState = newState(state);
+      state = newState;
+      return state;
+    }
     function subscribe(suber) {
       if (!subscribers) throw new Error('This hook has been discarded!');
       subscribers.push(suber);
