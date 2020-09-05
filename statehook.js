@@ -7,14 +7,17 @@
   function createHook(state) {
     var undefined = (function _undefined() {})();
     var subscribers = [];
+    var errorDiscarded = new Error('This hook has been discarded!');
+    function discard() { state = undefined; subscribers = undefined; }
+    function isDiscarded() { return subscribers === undefined; }
     function getState() { return state; }
     function setState(newState) {
-      if ('function' === typeof newState) newState = newState(state);
+      if (isDiscarded()) throw errorDiscarded;
       state = newState;
       return state;
     }
     function subscribe(suber) {
-      if (!subscribers) throw new Error('This hook has been discarded!');
+      if (isDiscarded()) throw errorDiscarded;
       subscribers.push(suber);
       return function unsubscribe() {
         if (subscribers && suber) subscribers.splice(subscribers.indexOf(suber), 1);
@@ -22,10 +25,9 @@
       };
     }
     function dispatch() {
-      if (!subscribers) throw new Error('This hook has been discarded!');
+      if (isDiscarded()) throw errorDiscarded;
       for (var idx in subscribers) subscribers[idx].apply(this, arguments);
     }
-    function discard() { state = undefined; subscribers = undefined; }
     return { getState: getState, setState: setState, subscribe: subscribe, dispatch: dispatch, discard: discard };
   }
   return { createHook: createHook };

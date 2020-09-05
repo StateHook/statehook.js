@@ -27,3 +27,4 @@ var hook = StateHook.createHook('default value');
 ### hook.<strong>subscribe(subscriber)</strong> => unsubcribe()
 ### hook.<strong>dispatch(args1, arg2, ..., argN)</strong> => void
 ### hook.<strong>discard()</strong> => void
+### hook.<strong>isDiscarded()</strong> =>Boolean
